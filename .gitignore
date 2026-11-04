@@ -1,0 +1,13 @@
+# Artefactos generados por el programa (incluyen claves: nunca en Git)
+output/*
+!output/.gitkeep
+
+# Binarios
+bin/
+*.exe
+/logsecure
+
+# IDE / sistema
+.idea/
+.vscode/
+.DS_Store
