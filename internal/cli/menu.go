@@ -1,4 +1,3 @@
-
 package cli
 
 import (
@@ -18,7 +17,9 @@ func Run() {
 		"Generar eventos y log en claro",
 		"Cifrar log",
 		"Descifrar log",
+		"Verificar integridad",
 		"Ver resultados",
+		"Ejecutar flujo completo",
 		"Salir",
 	}
 
@@ -26,6 +27,7 @@ func Run() {
 		menu := promptui.Select{
 			Label: "LOGSECURE - Protección de logs académicos",
 			Items: opciones,
+			Size:  len(opciones),
 		}
 
 		_, seleccion, err := menu.Run()
@@ -38,12 +40,16 @@ func Run() {
 		case opciones[0]:
 			generarLog()
 		case opciones[1]:
-			fmt.Println("La integración del cifrado está pendiente.")
+			cifrarLog()
 		case opciones[2]:
-			fmt.Println("La integración del descifrado está pendiente.")
+			descifrarLog()
 		case opciones[3]:
-			fmt.Println("La presentación completa de resultados está pendiente.")
+			verificarIntegridad()
 		case opciones[4]:
+			verResultados()
+		case opciones[5]:
+			flujoCompleto()
+		case opciones[6]:
 			fmt.Println("Cerrando LOGSECURE...")
 			return
 		}

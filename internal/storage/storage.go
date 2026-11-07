@@ -39,8 +39,17 @@ func Write(dir, name string, data []byte) error {
 	if name == KeyFile {
 		perm = secretFilePerm
 	}
-	if err := os.WriteFile(filepath.Join(dir, name), data, perm); err != nil {
+	path := filepath.Join(dir, name)
+	if err := os.WriteFile(path, data, perm); err != nil {
 		return fmt.Errorf("storage: escribir %s: %w", name, err)
+	}
+	// os.WriteFile solo aplica perm al CREAR el archivo: si key.bin ya
+	// existía (p. ej. de una ejecución anterior o copiado con otros
+	// permisos), se reescribiría conservando sus permisos viejos. Se fuerzan.
+	if name == KeyFile {
+		if err := os.Chmod(path, secretFilePerm); err != nil {
+			return fmt.Errorf("storage: restringir permisos de %s: %w", name, err)
+		}
 	}
 	return nil
 }
