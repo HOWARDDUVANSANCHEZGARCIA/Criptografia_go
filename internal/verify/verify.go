@@ -8,6 +8,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"criptografia_go/internal/crypto"
 	"criptografia_go/internal/hashing"
@@ -34,6 +36,13 @@ func SameHash(a, b string) bool {
 // clave es incorrecta, el error cumple errors.Is(err, crypto.ErrAuthFailed)
 // o errors.Is(err, ErrEncryptedTampered), y no se escribe ningún archivo.
 func DecryptLog(dir string) (string, error) {
+	// Borra resultados de un descifrado anterior: si este intento falla,
+	// no deben quedar hashes viejos que aparenten éxito.
+	for _, name := range []string{storage.LogDecrypted, storage.HashDecrypted} {
+		if err := os.Remove(filepath.Join(dir, name)); err != nil && !errors.Is(err, os.ErrNotExist) {
+			return "", err
+		}
+	}
 	ct, err := storage.Read(dir, storage.LogEncrypted)
 	if err != nil {
 		return "", err
