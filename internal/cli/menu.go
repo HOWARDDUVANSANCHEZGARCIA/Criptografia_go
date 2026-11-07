@@ -38,7 +38,7 @@ func Run() {
 		case opciones[0]:
 			generarLog()
 		case opciones[1]:
-			fmt.Println("La integración del cifrado está pendiente.")
+			cifrarLog()
 		case opciones[2]:
 			fmt.Println("La integración del descifrado está pendiente.")
 		case opciones[3]:
